@@ -64,18 +64,18 @@ def main():
                         help="(int) Number of workers for multi-process based agents, e.g. A3C",
                         default=os.environ.get("NUMBER_OF_ROLLOUT_WORKERS", 1),
                         type=int)
-    parser.add_argument('--model-s3-bucket',
-                        help='(string) S3 bucket where trained models are stored. It contains model checkpoints.',
-                        type=str,
-                        default=os.environ.get("MODEL_S3_BUCKET"))
-    parser.add_argument('--model-s3-prefix',
-                        help='(string) S3 prefix where trained models are stored. It contains model checkpoints.',
-                        type=str,
-                        default=os.environ.get("MODEL_S3_PREFIX"))
-    parser.add_argument('--aws-region',
-                        help='(string) AWS region',
-                        type=str,
-                        default=os.environ.get("ROS_AWS_REGION", "us-west-2"))
+    # parser.add_argument('--model-s3-bucket',
+    #                     help='(string) S3 bucket where trained models are stored. It contains model checkpoints.',
+    #                     type=str,
+    #                     default=os.environ.get("MODEL_S3_BUCKET"))
+    # parser.add_argument('--model-s3-prefix',
+    #                     help='(string) S3 prefix where trained models are stored. It contains model checkpoints.',
+    #                     type=str,
+    #                     default=os.environ.get("MODEL_S3_PREFIX"))
+    # parser.add_argument('--aws-region',
+    #                     help='(string) AWS region',
+    #                     type=str,
+    #                     default=os.environ.get("ROS_AWS_REGION", "us-west-2"))
 
     args = parser.parse_args()
 

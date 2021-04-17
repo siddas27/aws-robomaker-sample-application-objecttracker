@@ -65,18 +65,18 @@ def main():
                         help="(int) Number of workers for multi-process based agents, e.g. A3C",
                         default=1,
                         type=int)
-    parser.add_argument('--model-s3-bucket',
-                        help='(string) S3 bucket where trained models are stored. It contains model checkpoints.',
-                        type=str,
-                        default=os.environ.get("MODEL_S3_BUCKET"))
-    parser.add_argument('--model-s3-prefix',
-                        help='(string) S3 prefix where trained models are stored. It contains model checkpoints.',
-                        type=str,
-                        default=os.environ.get("MODEL_S3_PREFIX"))
-    parser.add_argument('--aws-region',
-                        help='(string) AWS region',
-                        type=str,
-                        default=os.environ.get("ROS_AWS_REGION", "us-west-2"))
+    # parser.add_argument('--model-s3-bucket',
+    #                     help='(string) S3 bucket where trained models are stored. It contains model checkpoints.',
+    #                     type=str,
+    #                     default=os.environ.get("MODEL_S3_BUCKET"))
+    # parser.add_argument('--model-s3-prefix',
+    #                     help='(string) S3 prefix where trained models are stored. It contains model checkpoints.',
+    #                     type=str,
+    #                     default=os.environ.get("MODEL_S3_PREFIX"))
+    # parser.add_argument('--aws-region',
+    #                     help='(string) AWS region',
+    #                     type=str,
+    #                     default=os.environ.get("ROS_AWS_REGION", "us-west-2"))
     parser.add_argument('--checkpoint-save-secs',
                         help="(int) Time period in second between 2 checkpoints",
                         type=int,
@@ -103,19 +103,19 @@ def main():
     task_parameters.__dict__['checkpoint_save_dir'] = args.local_model_directory
     task_parameters.__dict__ = add_items_to_dict(task_parameters.__dict__, args.__dict__)
 
-    data_store_params_instance = S3BotoDataStoreParameters(bucket_name=args.model_s3_bucket,
-                                                           s3_folder=args.model_s3_prefix,
-                                                           checkpoint_dir=args.local_model_directory,
-                                                           aws_region=args.aws_region)
-    data_store = S3BotoDataStore(data_store_params_instance)
+    # data_store_params_instance = S3BotoDataStoreParameters(bucket_name=args.model_s3_bucket,
+    #                                                        s3_folder=args.model_s3_prefix,
+    #                                                        checkpoint_dir=args.local_model_directory,
+    #                                                        aws_region=args.aws_region)
+    # data_store = S3BotoDataStore(data_store_params_instance)
 
-    sigterm_handler = SigTermHandler(data_store)
+    # sigterm_handler = SigTermHandler(data_store)
 
-    if args.save_frozen_graph:
-        data_store.graph_manager = graph_manager
+    # if args.save_frozen_graph:
+    #     data_store.graph_manager = graph_manager
 
-    graph_manager.data_store_params = data_store_params_instance
-    graph_manager.data_store = data_store
+    # graph_manager.data_store_params = data_store_params_instance
+    # graph_manager.data_store = data_store
     graph_manager.should_stop = should_stop_training_based_on_evaluation
     start_graph(graph_manager=graph_manager, task_parameters=task_parameters)
 

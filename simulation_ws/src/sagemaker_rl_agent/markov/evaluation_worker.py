@@ -38,18 +38,18 @@ def main():
                         help="(string) Name of a preset file to run in Markov's preset directory.",
                         type=str,
                         default=os.environ.get("MARKOV_PRESET_FILE", "object_tracker.py"))
-    parser.add_argument('--model-s3-bucket',
-                        help='(string) S3 bucket where trained models are stored. It contains model checkpoints.',
-                        type=str,
-                        default=os.environ.get("MODEL_S3_BUCKET"))
-    parser.add_argument('--model-s3-prefix',
-                        help='(string) S3 prefix where trained models are stored. It contains model checkpoints.',
-                        type=str,
-                        default=os.environ.get("MODEL_S3_PREFIX"))
-    parser.add_argument('--aws-region',
-                        help='(string) AWS region',
-                        type=str,
-                        default=os.environ.get("ROS_AWS_REGION", "us-west-2"))
+    # parser.add_argument('--model-s3-bucket',
+    #                     help='(string) S3 bucket where trained models are stored. It contains model checkpoints.',
+    #                     type=str,
+    #                     default=os.environ.get("MODEL_S3_BUCKET"))
+    # parser.add_argument('--model-s3-prefix',
+    #                     help='(string) S3 prefix where trained models are stored. It contains model checkpoints.',
+    #                     type=str,
+    #                     default=os.environ.get("MODEL_S3_PREFIX"))
+    # parser.add_argument('--aws-region',
+    #                     help='(string) AWS region',
+    #                     type=str,
+    #                     default=os.environ.get("ROS_AWS_REGION", "us-west-2"))
     parser.add_argument('--number-of-trials',
                         help='(integer) Number of trials',
                         type=int,
@@ -60,12 +60,12 @@ def main():
                         default='./checkpoint')
 
     args = parser.parse_args()
-    data_store_params_instance = S3BotoDataStoreParameters(bucket_name=args.model_s3_bucket,
-                                                           s3_folder=args.model_s3_prefix,
-                                                           checkpoint_dir=args.local_model_directory,
-                                                           aws_region=args.aws_region)
-    data_store = S3BotoDataStore(data_store_params_instance)
-    utils.wait_for_checkpoint(args.local_model_directory, data_store)
+    # data_store_params_instance = S3BotoDataStoreParameters(bucket_name=args.model_s3_bucket,
+    #                                                        s3_folder=args.model_s3_prefix,
+    #                                                        checkpoint_dir=args.local_model_directory,
+    #                                                        aws_region=args.aws_region)
+    # data_store = S3BotoDataStore(data_store_params_instance)
+    # utils.wait_for_checkpoint(args.local_model_directory, data_store)
 
     preset_file_success = data_store.download_presets_if_present(PRESET_LOCAL_PATH)
     if preset_file_success:
