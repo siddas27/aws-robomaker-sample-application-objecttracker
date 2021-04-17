@@ -3,7 +3,7 @@ from __future__ import print_function
 import time
 
 # only needed for fake driver setup
-import boto3
+# import boto3
 # gym
 import gym
 import numpy as np
@@ -70,7 +70,7 @@ class TurtleBot3ObjectTrackerAndFollowerEnv(gym.Env):
         #Subscribe to ROS topics and register callbacks
         rospy.Subscriber('/odom', Odometry, self.callback_position)
         rospy.Subscriber('/camera/rgb/image_raw', sensor_image, self.callback_image)
-        self.aws_region = rospy.get_param('ROS_AWS_REGION')
+        # self.aws_region = rospy.get_param('ROS_AWS_REGION')
 
         self.reward_in_episode = 0
         self.steps = 0
@@ -79,7 +79,7 @@ class TurtleBot3ObjectTrackerAndFollowerEnv(gym.Env):
     def reset(self):
         print('Total Reward Reward=%.2f' % self.reward_in_episode,
               'Total Steps=%.2f' % self.steps)
-        self.send_reward_to_cloudwatch(self.reward_in_episode)
+        # self.send_reward_to_cloudwatch(self.reward_in_episode)
 
         self.reward = None
         self.done = False
@@ -210,19 +210,19 @@ class TurtleBot3ObjectTrackerAndFollowerEnv(gym.Env):
         self.done = done
         self.next_state = state
 
-    def send_reward_to_cloudwatch(self, reward):
-        session = boto3.session.Session()
-        cloudwatch_client = session.client('cloudwatch', region_name=self.aws_region)
-        cloudwatch_client.put_metric_data(
-            MetricData=[
-                {
-                    'MetricName': 'ObjectTrackerRewardPerEpisode',
-                    'Unit': 'None',
-                    'Value': reward
-                },
-            ],
-            Namespace='AWSRoboMakerSimulation'
-        )
+    # def send_reward_to_cloudwatch(self, reward):
+    #     session = boto3.session.Session()
+    #     cloudwatch_client = session.client('cloudwatch', region_name=self.aws_region)
+    #     cloudwatch_client.put_metric_data(
+    #         MetricData=[
+    #             {
+    #                 'MetricName': 'ObjectTrackerRewardPerEpisode',
+    #                 'Unit': 'None',
+    #                 'Value': reward
+    #             },
+    #         ],
+    #         Namespace='AWSRoboMakerSimulation'
+    #     )
 
 class TurtleBot3ObjectTrackerAndFollowerDiscreteEnv(TurtleBot3ObjectTrackerAndFollowerEnv):
     def __init__(self):

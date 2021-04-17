@@ -7,7 +7,7 @@ import sys, os, signal
 import argparse
 import copy
 
-from markov.s3_boto_data_store import S3BotoDataStore, S3BotoDataStoreParameters
+# from markov.s3_boto_data_store import S3BotoDataStore, S3BotoDataStoreParameters
 from rl_coach.base_parameters import TaskParameters, Frameworks
 from rl_coach.utils import short_dynamic_import
 import imp
@@ -15,6 +15,9 @@ import imp
 import markov
 from markov import utils
 import markov.environments
+import os
+os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
+os.environ["CUDA_VISIBLE_DEVICES"] = "1" #(or "1" or "2")
 
 MARKOV_DIRECTORY = os.path.dirname(markov.__file__)
 CUSTOM_FILES_PATH = "./custom_files"
@@ -100,7 +103,7 @@ def main():
     # TODO: support other frameworks
     task_parameters = TaskParameters(framework_type=Frameworks.tensorflow,
                                      checkpoint_save_secs=args.checkpoint_save_secs)
-    task_parameters.__dict__['checkpoint_save_dir'] = args.local_model_directory
+    task_parameters.__dict__['checkpoint_save_dir'] = '~/.rlmodel/' # args.local_model_directory
     task_parameters.__dict__ = add_items_to_dict(task_parameters.__dict__, args.__dict__)
 
     # data_store_params_instance = S3BotoDataStoreParameters(bucket_name=args.model_s3_bucket,
