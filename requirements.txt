@@ -71,7 +71,6 @@ docker-pycreds==0.2.1
 docutils==0.17.1
 drone-wrapper==1.3.7
 dynamic-reconfigure==1.6.3
-dynamixel-sdk==3.7.31
 empy==3.3.4
 filelock==3.0.12
 gast==0.4.0

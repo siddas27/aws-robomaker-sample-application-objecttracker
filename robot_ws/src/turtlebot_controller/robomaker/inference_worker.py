@@ -9,7 +9,7 @@ from sensor_msgs.msg import Image as sensor_image
 
 FROZEN_MODEL_LOCAL_PATH = "model.pb"
 FROZEN_MODEL_S3_KEY = "model/model.pb"
-AWS_REGION = "us-west-2"
+# AWS_REGION = "us-west-2"
 
 TRAINING_IMAGE_SIZE = (160, 120)
 

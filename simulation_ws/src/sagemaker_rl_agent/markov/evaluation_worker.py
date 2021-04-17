@@ -8,9 +8,10 @@ from rl_coach.core_types import EnvironmentEpisodes
 from rl_coach.base_parameters import TaskParameters
 from rl_coach.utils import short_dynamic_import
 
-from markov.s3_boto_data_store import S3BotoDataStoreParameters, S3BotoDataStore
+# from markov.s3_boto_data_store import S3BotoDataStoreParameters, S3BotoDataStore
 import markov.environments
 from markov import utils
+
 
 CUSTOM_FILES_PATH = "robomaker"
 PRESET_LOCAL_PATH = os.path.join(CUSTOM_FILES_PATH, "presets/")
@@ -67,15 +68,15 @@ def main():
     # data_store = S3BotoDataStore(data_store_params_instance)
     # utils.wait_for_checkpoint(args.local_model_directory, data_store)
 
-    preset_file_success = data_store.download_presets_if_present(PRESET_LOCAL_PATH)
-    if preset_file_success:
-        environment_file_success = data_store.download_environments_if_present(ENVIRONMENT_LOCAL_PATH)
-        path_and_module = PRESET_LOCAL_PATH + args.markov_preset_file + ":graph_manager"
-        graph_manager = short_dynamic_import(path_and_module, ignore_module_case=True)
-        if environment_file_success:
-            import robomaker.environments
-        print("Using custom preset file!")
-    elif args.markov_preset_file:
+    # preset_file_success = data_store.download_presets_if_present(PRESET_LOCAL_PATH)
+    # if preset_file_success:
+        # environment_file_success = data_store.download_environments_if_present(ENVIRONMENT_LOCAL_PATH)
+        # path_and_module = PRESET_LOCAL_PATH + args.markov_preset_file + ":graph_manager"
+        # graph_manager = short_dynamic_import(path_and_module, ignore_module_case=True)
+        # if environment_file_success:
+        #     import robomaker.environments
+        # print("Using custom preset file!")
+    if args.markov_preset_file:
         markov_path = imp.find_module("markov")[1]
         preset_location = os.path.join(markov_path, "presets", args.markov_preset_file)
         path_and_module = preset_location + ":graph_manager"
@@ -84,7 +85,7 @@ def main():
     else:
         raise ValueError("Unable to determine preset file")
 
-    graph_manager.data_store = data_store
+    # graph_manager.data_store = data_store
     evaluation_worker(
         graph_manager=graph_manager,
         number_of_trials=args.number_of_trials,
