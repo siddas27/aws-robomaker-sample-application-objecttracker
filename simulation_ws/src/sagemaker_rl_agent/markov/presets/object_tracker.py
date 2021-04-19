@@ -18,7 +18,7 @@ from rl_coach.memories.memory import MemoryGranularity
 ####################
 
 schedule_params = ScheduleParameters()
-schedule_params.improve_steps = TrainingSteps(10000000)
+schedule_params.improve_steps = TrainingSteps(10000)
 schedule_params.steps_between_evaluation_periods = EnvironmentEpisodes(40)
 schedule_params.evaluation_steps = EnvironmentEpisodes(5)
 schedule_params.heatup_steps = EnvironmentSteps(0)
@@ -73,3 +73,4 @@ preset_validation_params.max_episodes_to_achieve_reward = 1000
 graph_manager = BasicRLGraphManager(agent_params=agent_params, env_params=env_params,
                                     schedule_params=schedule_params, vis_params=vis_params,
                                     preset_validation_params=preset_validation_params)
+

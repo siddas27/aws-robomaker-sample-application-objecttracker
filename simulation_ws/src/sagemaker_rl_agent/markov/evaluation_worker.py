@@ -12,6 +12,8 @@ from rl_coach.utils import short_dynamic_import
 import markov.environments
 from markov import utils
 
+os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
+os.environ["CUDA_VISIBLE_DEVICES"] = "1"
 
 CUSTOM_FILES_PATH = "robomaker"
 PRESET_LOCAL_PATH = os.path.join(CUSTOM_FILES_PATH, "presets/")

@@ -44,3 +44,5 @@ def write_frozen_graph(graph_manager, local_path):
     frozen = tf.graph_util.convert_variables_to_constants(graph_manager.sess, graph_manager.sess.graph_def, output_head)
     tf.train.write_graph(frozen, local_path, 'model.pb', as_text=False)
     print("Saved TF frozen graph!")
+
+

@@ -7,7 +7,7 @@ import rospy
 from geometry_msgs.msg import Twist
 from sensor_msgs.msg import Image as sensor_image
 
-FROZEN_MODEL_LOCAL_PATH = "model.pb"
+FROZEN_MODEL_LOCAL_PATH = "./rlmodel/model.pb"
 FROZEN_MODEL_S3_KEY = "model/model.pb"
 # AWS_REGION = "us-west-2"
 
@@ -89,7 +89,7 @@ class InferenceWorker:
         self.ack_publisher.publish(speed)
 
 if __name__ == '__main__':
-    model_path = sys.argv[1]
+    model_path = "./rlmodel/model.pb"
     print('Starting Inference Worker, Specified Model Directory: ', model_path)
 
     rospy.init_node('rl_coach', anonymous=True)

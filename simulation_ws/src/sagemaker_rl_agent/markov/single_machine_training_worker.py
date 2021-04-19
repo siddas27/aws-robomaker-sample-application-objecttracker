@@ -6,12 +6,11 @@ import sys, os, signal
 
 import argparse
 import copy
-
+import tensorflow as tf
 # from markov.s3_boto_data_store import S3BotoDataStore, S3BotoDataStoreParameters
 from rl_coach.base_parameters import TaskParameters, Frameworks
 from rl_coach.utils import short_dynamic_import
 import imp
-
 import markov
 from markov import utils
 import markov.environments
@@ -26,6 +25,16 @@ if not os.path.exists(CUSTOM_FILES_PATH):
     os.makedirs(CUSTOM_FILES_PATH)
 
 
+def write_frozen_graph(graph_manager, local_path):
+    if not os.path.exists(local_path):
+        os.makedirs(local_path)
+    # TODO: Supports only PPO
+    output_head = ['main_level/agent/main/online/network_1/ppo_head_0/policy']
+    frozen = tf.graph_util.convert_variables_to_constants(graph_manager.sess, graph_manager.sess.graph_def, output_head)
+    tf.train.write_graph(frozen, local_path, 'model.pb', as_text=False)
+    print("Saved TF frozen graph!")
+
+
 def start_graph(graph_manager: 'GraphManager', task_parameters: 'TaskParameters'):
     graph_manager.create_graph(task_parameters)
 
@@ -34,6 +43,14 @@ def start_graph(graph_manager: 'GraphManager', task_parameters: 'TaskParameters'
 
     # Start the training
     graph_manager.improve()
+
+def save_graph(graph_manager: 'GraphManager', task_parameters: 'TaskParameters'):
+    graph_manager.create_graph(task_parameters)
+
+    # save randomly initialized graph
+    write_frozen_graph(graph_manager, local_path='./rlmodel')
+
+
 
 
 def add_items_to_dict(target_dict, source_dict):
@@ -102,8 +119,9 @@ def main():
 
     # TODO: support other frameworks
     task_parameters = TaskParameters(framework_type=Frameworks.tensorflow,
-                                     checkpoint_save_secs=args.checkpoint_save_secs)
-    task_parameters.__dict__['checkpoint_save_dir'] = '~/.rlmodel/' # args.local_model_directory
+                                     checkpoint_save_secs=100)
+    task_parameters.checkpoint_restore_path = args.local_model_directory
+    task_parameters.checkpoint_save_dir = args.local_model_directory
     task_parameters.__dict__ = add_items_to_dict(task_parameters.__dict__, args.__dict__)
 
     # data_store_params_instance = S3BotoDataStoreParameters(bucket_name=args.model_s3_bucket,
@@ -120,7 +138,9 @@ def main():
     # graph_manager.data_store_params = data_store_params_instance
     # graph_manager.data_store = data_store
     graph_manager.should_stop = should_stop_training_based_on_evaluation
-    start_graph(graph_manager=graph_manager, task_parameters=task_parameters)
+    # start_graph(graph_manager=graph_manager, task_parameters=task_parameters)
+    save_graph(graph_manager=graph_manager, task_parameters=task_parameters)
+
 
 
 if __name__ == '__main__':
